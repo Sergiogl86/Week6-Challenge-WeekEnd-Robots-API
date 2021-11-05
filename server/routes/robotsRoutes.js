@@ -1,12 +1,14 @@
 const express = require("express");
 const debug = require("debug")("robots:robotsRoutes");
-const { getRobots } = require("../controller/robotsController");
+const { getRobots, getIdRobot } = require("../controller/robotsController");
 
 const router = express.Router();
 
 router.get("/", getRobots);
 
-/* router.get("/:idRobot", xxxxx);
+router.get("/:idRobot", getIdRobot);
+
+/* 
 
 router.post("/create", xxxxx);
 

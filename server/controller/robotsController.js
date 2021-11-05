@@ -8,4 +8,13 @@ const getRobots = async (req, res) => {
   res.json(robots);
 };
 
-module.exports = { getRobots };
+const getIdRobot = async (req, res) => {
+  const { idRobot } = req.params;
+  debug(chalk.red(`Haciendo el buscando a /${idRobot}`));
+  const getRobot = await Robot.findOne({
+    _id: idRobot,
+  });
+  res.json(getRobot);
+};
+
+module.exports = { getRobots, getIdRobot };
