@@ -5,6 +5,7 @@ const {
   getIdRobot,
   tokenControl,
   deleteRobot,
+  crearRobot,
 } = require("../controller/robotsController");
 
 const router = express.Router();
@@ -12,6 +13,8 @@ const router = express.Router();
 router.get("/", getRobots);
 
 router.get("/:idRobot", getIdRobot);
+
+router.post("/create", tokenControl, crearRobot);
 
 router.delete("/delete/:idRobot", tokenControl, deleteRobot);
 

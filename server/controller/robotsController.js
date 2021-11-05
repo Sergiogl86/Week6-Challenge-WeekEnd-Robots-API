@@ -8,8 +8,13 @@ const getRobots = async (req, res) => {
   res.json(robots);
 };
 
-const getIdRobot = async (req, res) => {
+const getIdRobot = async (req, res, next) => {
   const { idRobot } = req.params;
+  if (typeof idRobot === "string") {
+    const error = new Error("Peticion erronea");
+    error.code = 404;
+    next(error);
+  }
   debug(chalk.red(`Haciendo el buscando a /${idRobot}`));
   const getRobot = await Robot.findOne({
     _id: idRobot,
@@ -23,7 +28,20 @@ const tokenControl = (req, res, next) => {
   if (token === "h29D8b23Llm45") {
     next();
   } else {
-    res.json({ error: "Es necesario introducir token!" });
+    res.json({ error: "Introducir el token correcto!" });
+  }
+};
+
+const crearRobot = async (req, res, next) => {
+  try {
+    debug(chalk.red("Haciendo el post a /"));
+    const robot = req.body;
+    const newRobot = await Robot.create(robot);
+    res.json(newRobot);
+  } catch (error) {
+    error.code = 400;
+    error.message = "Datos erroneos!";
+    next(error);
   }
 };
 
@@ -46,5 +64,6 @@ module.exports = {
   getRobots,
   getIdRobot,
   deleteRobot,
+  crearRobot,
   tokenControl,
 };
