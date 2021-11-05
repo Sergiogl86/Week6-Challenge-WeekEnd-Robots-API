@@ -1,6 +1,7 @@
 const express = require("express");
 const debug = require("debug")("robots:servidor");
 const chalk = require("chalk");
+const { noEncontradoHandler, finalErrorHandler } = require("./error");
 
 const app = express();
 
@@ -16,5 +17,8 @@ const iniciarServidor = (port) => {
     }
   });
 };
+
+app.use(noEncontradoHandler);
+app.use(finalErrorHandler);
 
 module.exports = iniciarServidor;
