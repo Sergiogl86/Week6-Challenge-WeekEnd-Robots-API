@@ -2,24 +2,31 @@ const debug = require("debug")("robots:robotsController");
 const chalk = require("chalk");
 const Robot = require("../../database/models/robots");
 
-const getRobots = async (req, res) => {
-  const robots = await Robot.find();
-  debug(chalk.red("Haciendo el get a /"));
-  res.json(robots);
+const getRobots = async (req, res, next) => {
+  try {
+    const robots = await Robot.find();
+    debug(chalk.red("Haciendo el get a /"));
+    res.json(robots);
+  } catch (error) {
+    error.code = 400;
+    error.message = "Datos erroneos!";
+    next(error);
+  }
 };
 
 const getIdRobot = async (req, res, next) => {
   const { idRobot } = req.params;
-  if (typeof idRobot === "string") {
-    const error = new Error("Peticion erronea");
-    error.code = 404;
+  try {
+    debug(chalk.red(`Haciendo el buscando a /${idRobot}`));
+    const getRobot = await Robot.findOne({
+      _id: idRobot,
+    });
+    res.json(getRobot);
+  } catch (error) {
+    error.code = 400;
+    error.message = "Datos erroneos!";
     next(error);
   }
-  debug(chalk.red(`Haciendo el buscando a /${idRobot}`));
-  const getRobot = await Robot.findOne({
-    _id: idRobot,
-  });
-  res.json(getRobot);
 };
 
 const tokenControl = (req, res, next) => {
