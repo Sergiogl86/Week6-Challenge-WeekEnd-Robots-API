@@ -52,6 +52,20 @@ const crearRobot = async (req, res, next) => {
   }
 };
 
+const modificarRobot = async (req, res, next) => {
+  try {
+    debug(chalk.red("Haciendo el put a /"));
+    const robot = req.body;
+    debug(chalk.red(robot._id));
+    await Robot.findByIdAndUpdate(robot._id, robot);
+    res.json(robot);
+  } catch (error) {
+    error.code = 400;
+    error.message = "Datos erroneos!";
+    next(error);
+  }
+};
+
 const deleteRobot = async (req, res, next) => {
   try {
     const { idRobot } = req.params;
@@ -73,4 +87,5 @@ module.exports = {
   deleteRobot,
   crearRobot,
   tokenControl,
+  modificarRobot,
 };
