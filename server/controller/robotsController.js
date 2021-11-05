@@ -2,19 +2,31 @@ const debug = require("debug")("robots:robotsController");
 const chalk = require("chalk");
 const Robot = require("../../database/models/robots");
 
-const getRobots = async (req, res) => {
-  const robots = await Robot.find();
-  debug(chalk.red("Haciendo el get a /"));
-  res.json(robots);
+const getRobots = async (req, res, next) => {
+  try {
+    const robots = await Robot.find();
+    debug(chalk.red("Haciendo el get a /"));
+    res.json(robots);
+  } catch (error) {
+    error.code = 400;
+    error.message = "Datos erroneos!";
+    next(error);
+  }
 };
 
-const getIdRobot = async (req, res) => {
+const getIdRobot = async (req, res, next) => {
   const { idRobot } = req.params;
-  debug(chalk.red(`Haciendo el buscando a /${idRobot}`));
-  const getRobot = await Robot.findOne({
-    _id: idRobot,
-  });
-  res.json(getRobot);
+  try {
+    debug(chalk.red(`Haciendo el buscando a /${idRobot}`));
+    const getRobot = await Robot.findOne({
+      _id: idRobot,
+    });
+    res.json(getRobot);
+  } catch (error) {
+    error.code = 400;
+    error.message = "Datos erroneos!";
+    next(error);
+  }
 };
 
 const tokenControl = (req, res, next) => {
@@ -23,7 +35,20 @@ const tokenControl = (req, res, next) => {
   if (token === "h29D8b23Llm45") {
     next();
   } else {
-    res.json({ error: "Es necesario introducir token!" });
+    res.json({ error: "Introducir el token correcto!" });
+  }
+};
+
+const crearRobot = async (req, res, next) => {
+  try {
+    debug(chalk.red("Haciendo el post a /"));
+    const robot = req.body;
+    const newRobot = await Robot.create(robot);
+    res.json(newRobot);
+  } catch (error) {
+    error.code = 400;
+    error.message = "Datos erroneos!";
+    next(error);
   }
 };
 
@@ -46,5 +71,6 @@ module.exports = {
   getRobots,
   getIdRobot,
   deleteRobot,
+  crearRobot,
   tokenControl,
 };
