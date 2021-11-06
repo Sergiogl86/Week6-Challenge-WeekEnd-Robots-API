@@ -57,7 +57,7 @@ const modificarRobot = async (req, res, next) => {
     debug(chalk.red("Haciendo el put a /"));
     const robot = req.body;
     debug(chalk.red(robot._id));
-    await Robot.findByIdAndUpdate(robot._id, robot);
+    await Robot.findByIdAndUpdate(robot._id, robot, { runValidators: true });
     res.json(robot);
   } catch (error) {
     error.code = 400;
