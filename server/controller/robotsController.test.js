@@ -1,5 +1,10 @@
 const Robot = require("../../database/models/robots");
-const { getRobots, getIdRobot, crearRobot } = require("./robotsController");
+const {
+  getRobots,
+  getIdRobot,
+  crearRobot,
+  modificarRobot,
+} = require("./robotsController");
 
 jest.mock("../../database/models/robots");
 
@@ -167,6 +172,72 @@ describe("Given a crearRobot controller", () => {
       const next = jest.fn();
 
       await crearRobot(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+      expect(error).toHaveProperty("code");
+      expect(error.code).toBe(400);
+    });
+  });
+});
+
+describe("Given a modificarRobot controller", () => {
+  describe("When it receives req.body with Robot", () => {
+    test("Then it should call Robot.findByIdAndUpdate with robot._id and Robot", async () => {
+      const robot = {
+        caracteristicas: {
+          velocidad: 100,
+          resistencia: 70,
+          FechaCeCreacion: "12-05-2018",
+        },
+        _id: "61857589666bcb02723c195c",
+        nombre: "WALL·E",
+        imagenUrl:
+          "https://iresiduo.com/sites/default/files/images/08-Wall-E.jpg",
+      };
+
+      const res = { json: jest.fn() };
+
+      const req = {
+        body: robot,
+      };
+
+      Robot.findByIdAndUpdate = jest.fn().mockResolvedValue({});
+
+      await modificarRobot(req, res, null);
+
+      expect(Robot.findByIdAndUpdate).toHaveBeenCalledWith(robot._id, robot, {
+        runValidators: true,
+      });
+      expect(res.json).toHaveBeenCalledWith(robot);
+    });
+  });
+  describe("When modificarRobot rejects, res", () => {
+    test("Then it should call the method json with a error rejected", async () => {
+      const error = {};
+
+      Robot.findByIdAndUpdate = jest.fn().mockRejectedValue(error);
+
+      const robot = {
+        caracteristicas: {
+          velocidad: 100,
+          resistencia: 70,
+          FechaCeCreacion: "12-05-2018",
+        },
+        _id: "61857589666bcb02723c195c",
+        nombre: "WALL·E",
+        imagenUrl:
+          "https://iresiduo.com/sites/default/files/images/08-Wall-E.jpg",
+      };
+
+      const res = { json: jest.fn() };
+
+      const req = {
+        body: robot,
+      };
+
+      const next = jest.fn();
+
+      await modificarRobot(req, res, next);
 
       expect(next).toHaveBeenCalledWith(error);
       expect(error).toHaveProperty("code");
