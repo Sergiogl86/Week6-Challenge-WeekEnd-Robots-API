@@ -19,7 +19,7 @@ const getIdRobot = async (req, res, next) => {
   try {
     debug(chalk.red(`Haciendo el buscando a /${idRobot}`));
     const getRobot = await Robot.findOne({
-      _id: idRobot,
+      id: idRobot,
     });
     res.json(getRobot.transform());
   } catch (error) {
@@ -71,7 +71,7 @@ const deleteRobot = async (req, res, next) => {
     const { idRobot } = req.params;
     debug(chalk.red(`Haciendo el DELETE a /delete/${idRobot}`));
     await Robot.deleteOne({
-      _id: idRobot,
+      id: idRobot,
     });
     res.json({ id: idRobot });
   } catch (error) {
