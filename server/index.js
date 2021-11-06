@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 const debug = require("debug")("robots:servidor");
 const chalk = require("chalk");
 const { noEncontradoHandler, finalErrorHandler } = require("./error");
@@ -23,6 +24,7 @@ const iniciarServidor = (port) => {
 
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(cors()); // <---- use cors middleware
 
 app.use("/robots", robotsRoutes);
 
