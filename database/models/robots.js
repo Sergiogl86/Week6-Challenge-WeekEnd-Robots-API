@@ -29,6 +29,16 @@ const robotSchema = new Schema({
   },
 });
 
+robotSchema.method("transform", function () {
+  const obj = this.toObject();
+
+  // Rename fields
+  obj.id = obj._id;
+  delete obj._id;
+
+  return obj;
+});
+
 const Robot = model("robot", robotSchema);
 
 module.exports = Robot;
