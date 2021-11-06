@@ -73,7 +73,7 @@ const deleteRobot = async (req, res, next) => {
     await Robot.deleteOne({
       _id: idRobot,
     });
-    res.json({ id: idRobot });
+    res.json({ _id: idRobot });
   } catch (error) {
     error.code = 400;
     error.message = "Datos erroneos!";
