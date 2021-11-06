@@ -5,6 +5,7 @@ const {
   crearRobot,
   modificarRobot,
   deleteRobot,
+  tokenControl,
 } = require("./robotsController");
 
 jest.mock("../../database/models/robots");
@@ -287,6 +288,41 @@ describe("Given a deleteRobot controller", () => {
       expect(next).toHaveBeenCalledWith(error);
       expect(error).toHaveProperty("code");
       expect(error.code).toBe(400);
+    });
+  });
+});
+
+describe("Given a tokenControl controller", () => {
+  describe("When it receives req.query with token Ok", () => {
+    test("Then it should call next()", () => {
+      const req = {
+        query: {
+          token: "h29D8b23Llm45",
+        },
+      };
+
+      const next = jest.fn();
+
+      tokenControl(req, null, next);
+
+      expect(next).toHaveBeenCalled();
+    });
+  });
+  describe("When it receives req.query with wrong token", () => {
+    test("Then it should call next()", () => {
+      const req = {
+        query: {
+          token: "wrong token",
+        },
+      };
+
+      const res = { json: jest.fn() };
+
+      tokenControl(req, res, null);
+
+      expect(res.json).toHaveBeenCalledWith({
+        error: "Introducir el token correcto!",
+      });
     });
   });
 });
