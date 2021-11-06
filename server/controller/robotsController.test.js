@@ -20,7 +20,7 @@ describe("Given a getRobots controller", () => {
             resistencia: 70,
             FechaCeCreacion: "12-05-2018",
           },
-          _id: "61857589666bcb02723c195c",
+          id: "61857589666bcb02723c195c",
           nombre: "WALL·E",
           imagenUrl:
             "https://iresiduo.com/sites/default/files/images/08-Wall-E.jpg",
@@ -31,7 +31,7 @@ describe("Given a getRobots controller", () => {
             resistencia: 7,
             FechaCeCreacion: "12-05-2018",
           },
-          _id: "61858347666bcb02723c195d",
+          id: "61858347666bcb02723c195d",
           nombre: "WALL·E 2",
           imagenUrl:
             "https://iresiduo.com/sites/default/files/images/08-Wall-E.jpg",
@@ -42,7 +42,7 @@ describe("Given a getRobots controller", () => {
             resistencia: 7,
             FechaCeCreacion: "12-05-2018",
           },
-          _id: "61858354666bcb02723c195e",
+          id: "61858354666bcb02723c195e",
           nombre: "WALL·E 3",
           imagenUrl:
             "https://iresiduo.com/sites/default/files/images/08-Wall-E.jpg",
@@ -53,7 +53,7 @@ describe("Given a getRobots controller", () => {
 
       const res = { json: jest.fn() };
 
-      await getRobots(null, res, null);
+      await getRobots(null, res, () => {});
 
       expect(Robot.find).toHaveBeenCalled();
       expect(res.json).toHaveBeenCalledWith(robots);
@@ -80,14 +80,14 @@ describe("Given a getRobots controller", () => {
 
 describe("Given a getIdRobot controller", () => {
   describe("When it receives req with idRobot", () => {
-    test("Then it should call Robot.findOne with object _id: idRobot", async () => {
+    test("Then it should call Robot.findOne with object id: idRobot", async () => {
       const robot = {
         caracteristicas: {
           velocidad: 100,
           resistencia: 70,
           FechaCeCreacion: "12-05-2018",
         },
-        _id: "61857589666bcb02723c195c",
+        id: "61857589666bcb02723c195c",
         nombre: "WALL·E",
         imagenUrl:
           "https://iresiduo.com/sites/default/files/images/08-Wall-E.jpg",
@@ -105,7 +105,7 @@ describe("Given a getIdRobot controller", () => {
 
       await getIdRobot(req, res, null);
 
-      expect(Robot.findOne).toHaveBeenCalledWith({ _id: 3 });
+      expect(Robot.findOne).toHaveBeenCalledWith({ id: 3 });
       expect(res.json).toHaveBeenCalledWith(robot);
     });
   });
@@ -141,7 +141,7 @@ describe("Given a crearRobot controller", () => {
           resistencia: 70,
           FechaCeCreacion: "12-05-2018",
         },
-        _id: "61857589666bcb02723c195c",
+        id: "61857589666bcb02723c195c",
         nombre: "WALL·E",
         imagenUrl:
           "https://iresiduo.com/sites/default/files/images/08-Wall-E.jpg",
@@ -155,7 +155,7 @@ describe("Given a crearRobot controller", () => {
 
       Robot.create = jest.fn().mockResolvedValue(robot);
 
-      await crearRobot(req, res, null);
+      await crearRobot(req, res, () => {});
 
       expect(Robot.create).toHaveBeenCalledWith(robot);
       expect(res.json).toHaveBeenCalledWith(robot);
@@ -207,7 +207,7 @@ describe("Given a modificarRobot controller", () => {
 
       await modificarRobot(req, res, null);
 
-      expect(Robot.findByIdAndUpdate).toHaveBeenCalledWith(robot._id, robot, {
+      expect(Robot.findByIdAndUpdate).toHaveBeenCalledWith(robot.id, robot, {
         runValidators: true,
       });
       expect(res.json).toHaveBeenCalledWith(robot);
@@ -263,8 +263,8 @@ describe("Given a deleteRobot controller", () => {
 
       await deleteRobot(req, res, null);
 
-      expect(Robot.deleteOne).toHaveBeenCalledWith({ _id: 3 });
-      expect(res.json).toHaveBeenCalledWith({ _id: 3 });
+      expect(Robot.deleteOne).toHaveBeenCalledWith({ id: 3 });
+      expect(res.json).toHaveBeenCalledWith({ id: 3 });
     });
   });
   describe("When modificarRobot rejects, res", () => {
