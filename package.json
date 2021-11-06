@@ -5,16 +5,19 @@
   "main": "index.js",
   "scripts": {
     "start": "node .",
-    "start-dev": "nodemon -q ."
+    "start-dev": "nodemon -q .",
+    "test": "jest --watchAll --collect-coverage"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/jest": "^27.0.2",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.25.2"
+    "eslint-plugin-import": "^2.25.2",
+    "jest": "^27.3.1"
   },
   "dependencies": {
     "chalk": "^4.1.2",
