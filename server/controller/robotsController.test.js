@@ -4,6 +4,7 @@ const {
   getIdRobot,
   crearRobot,
   modificarRobot,
+  deleteRobot,
 } = require("./robotsController");
 
 jest.mock("../../database/models/robots");
@@ -238,6 +239,50 @@ describe("Given a modificarRobot controller", () => {
       const next = jest.fn();
 
       await modificarRobot(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+      expect(error).toHaveProperty("code");
+      expect(error.code).toBe(400);
+    });
+  });
+});
+
+describe("Given a deleteRobot controller", () => {
+  describe("When it receives req with idRobot", () => {
+    test("Then it should call Robot.deleteOne with idRobot", async () => {
+      const res = { json: jest.fn() };
+
+      const req = {
+        params: {
+          idRobot: 3,
+        },
+      };
+
+      Robot.deleteOne = jest.fn().mockResolvedValue({});
+
+      await deleteRobot(req, res, null);
+
+      expect(Robot.deleteOne).toHaveBeenCalledWith({ _id: 3 });
+      expect(res.json).toHaveBeenCalledWith({ _id: 3 });
+    });
+  });
+  describe("When modificarRobot rejects, res", () => {
+    test("Then it should call the method json with a error rejected", async () => {
+      const error = {};
+
+      Robot.deleteOne = jest.fn().mockRejectedValue(error);
+
+      const res = { json: jest.fn() };
+
+      const req = {
+        params: {
+          idRobot: 3,
+        },
+      };
+
+      const next = jest.fn();
+
+      await deleteRobot(req, res, next);
 
       expect(next).toHaveBeenCalledWith(error);
       expect(error).toHaveProperty("code");
