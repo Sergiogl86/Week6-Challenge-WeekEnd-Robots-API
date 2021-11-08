@@ -29,16 +29,6 @@ const getIdRobot = async (req, res, next) => {
   }
 };
 
-const tokenControl = (req, res, next) => {
-  const { token } = { ...req.query };
-  debug(chalk.red(`Ha llegado el token = ${token}`));
-  if (token === "h29D8b23Llm45") {
-    next();
-  } else {
-    res.json({ error: "Introducir el token correcto!" });
-  }
-};
-
 const crearRobot = async (req, res, next) => {
   try {
     debug(chalk.red("Haciendo el post a /"));
@@ -86,6 +76,5 @@ module.exports = {
   getIdRobot,
   deleteRobot,
   crearRobot,
-  tokenControl,
   modificarRobot,
 };

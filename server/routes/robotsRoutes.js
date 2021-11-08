@@ -3,7 +3,6 @@ const debug = require("debug")("robots:robotsRoutes");
 const {
   getRobots,
   getIdRobot,
-  tokenControl,
   deleteRobot,
   crearRobot,
   modificarRobot,
@@ -15,10 +14,10 @@ router.get("/", getRobots);
 
 router.get("/:idRobot", getIdRobot);
 
-router.post("/create", tokenControl, crearRobot);
+router.post("/create", crearRobot);
 
-router.put("/update", tokenControl, modificarRobot);
+router.put("/update", modificarRobot);
 
-router.delete("/delete/:idRobot", tokenControl, deleteRobot);
+router.delete("/delete/:idRobot", deleteRobot);
 
 module.exports = router;
