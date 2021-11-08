@@ -15,7 +15,7 @@ const createUser = async (req, res, next) => {
     res.json(user);
   } catch (error) {
     error.code = 400;
-    error.message = "Datos erroneos!";
+    error.message = "Datos erroneos!!";
     next(error);
   }
 };
