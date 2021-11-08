@@ -29,7 +29,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors()); // <---- use cors middleware
 
-app.use("/users", Auth, usersRoute);
+app.use("/users", usersRoute);
 app.use("/robots", Auth, robotsRoutes);
 
 app.use(noEncontradoHandler);
