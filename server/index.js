@@ -6,6 +6,9 @@ const chalk = require("chalk");
 const { noEncontradoHandler, finalErrorHandler } = require("./error");
 
 const robotsRoutes = require("./routes/robotsRoutes");
+const usersRoute = require("./routes/usersRoute");
+
+const Auth = require("./middlewares/Auth");
 
 const app = express();
 
@@ -26,7 +29,8 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors()); // <---- use cors middleware
 
-app.use("/robots", robotsRoutes);
+app.use("/users", Auth, usersRoute);
+app.use("/robots", Auth, robotsRoutes);
 
 app.use(noEncontradoHandler);
 app.use(finalErrorHandler);

@@ -16,6 +16,7 @@ const conectarBD = () =>
       debug(chalk.green("Conectado a BD - Robots."));
       resolve();
     });
+    mongoose.set("debug", true);
   });
 
 module.exports = conectarBD;
