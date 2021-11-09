@@ -17,6 +17,12 @@ const conectarBD = () =>
       resolve();
     });
     mongoose.set("debug", true);
+    mongoose.set("toJSON", {
+      virtuals: true,
+      transform: (doc, ret) => {
+        delete ret._id;
+      },
+    });
   });
 
 module.exports = conectarBD;

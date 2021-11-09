@@ -6,7 +6,7 @@ const getRobots = async (req, res, next) => {
   try {
     const robots = await Robot.find();
     debug(chalk.red("Haciendo el get a /"));
-    res.json(robots.map((robot) => robot.transform()));
+    res.json(robots);
   } catch (error) {
     error.code = 400;
     error.message = "Datos erroneos!";
@@ -21,7 +21,7 @@ const getIdRobot = async (req, res, next) => {
     const getRobot = await Robot.findOne({
       id: idRobot,
     });
-    res.json(getRobot.transform());
+    res.json(getRobot);
   } catch (error) {
     error.code = 400;
     error.message = "Datos erroneos!";
@@ -34,7 +34,7 @@ const crearRobot = async (req, res, next) => {
     debug(chalk.red("Haciendo el post a /"));
     const robot = req.body;
     const newRobot = await Robot.create(robot);
-    res.json(newRobot.transform());
+    res.json(newRobot);
   } catch (error) {
     error.code = 400;
     error.message = "Datos erroneos!";

@@ -26,8 +26,8 @@ const iniciarServidor = (port) => {
 };
 
 app.use(morgan("dev"));
-app.use(express.json());
 app.use(cors()); // <---- use cors middleware
+app.use(express.json());
 
 app.use("/users", usersRoute);
 app.use("/robots", Auth, robotsRoutes);
