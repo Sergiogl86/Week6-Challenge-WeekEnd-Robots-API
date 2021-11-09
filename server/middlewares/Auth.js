@@ -24,7 +24,7 @@ const Auth = (req, res, next) => {
       debug(chalk.green("Token recogido"));
       try {
         const user = jwt.verify(token, process.env.ROBOTS_HASH);
-        req.user = user.id;
+        req.userid = user.id;
         debug(chalk.green(user));
         debug(chalk.green("Token correcto"));
         next();
