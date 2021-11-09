@@ -32,7 +32,7 @@ describe("Given a loginUser controller", () => {
 
       const next = jest.fn();
 
-      const expectedToken = { user: "ToKen" };
+      const expectedToken = { user: "Token" };
 
       await loginUser(req, res, next);
 

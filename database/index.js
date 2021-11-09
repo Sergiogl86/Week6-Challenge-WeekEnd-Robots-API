@@ -4,9 +4,9 @@ const chalk = require("chalk");
 
 const mongoose = require("mongoose");
 
-const conectarBD = () =>
+const conectarBD = (connectionString) =>
   new Promise((resolve, reject) => {
-    mongoose.connect(process.env.MONGODB_STRING, (error) => {
+    mongoose.connect(connectionString, (error) => {
       if (error) {
         debug(chalk.red("No se ha conectado a BD - Robots."));
         debug(chalk.red(error.message));

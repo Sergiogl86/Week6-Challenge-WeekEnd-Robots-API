@@ -12,18 +12,26 @@ const Auth = require("./middlewares/Auth");
 
 const app = express();
 
-const iniciarServidor = (port) => {
-  const servidor = app.listen(port, () => {
-    debug(chalk.yellow(`Escuchando en el puerto ${port}`));
-  });
+const iniciarServidor = (port) =>
+  new Promise((resolve, reject) => {
+    const servidor = app.listen(port, () => {
+      debug(chalk.yellow(`Escuchando en el puerto ${port}`));
+    });
 
-  servidor.on("error", (error) => {
-    debug(chalk.red("Ha habido un error al iniciar el servidor."));
-    if (error.code === "EADDRINUSE") {
-      debug(chalk.red(`El puerto ${port} está bloqueado.`));
-    }
+    servidor.on("error", (error) => {
+      debug(chalk.red("Ha habido un error al iniciar el servidor."));
+      if (error.code === "EADDRINUSE") {
+        debug(chalk.red(`El puerto ${port} está bloqueado.`));
+      }
+      reject();
+    });
+
+    servidor.on("close", () => {
+      debug(chalk.yellow("Servidor express desconectado"));
+    });
+
+    resolve(servidor);
   });
-};
 
 app.use(morgan("dev"));
 app.use(cors()); // <---- use cors middleware
@@ -35,4 +43,4 @@ app.use("/robots", Auth, robotsRoutes);
 app.use(noEncontradoHandler);
 app.use(finalErrorHandler);
 
-module.exports = iniciarServidor;
+module.exports = { iniciarServidor, app };
