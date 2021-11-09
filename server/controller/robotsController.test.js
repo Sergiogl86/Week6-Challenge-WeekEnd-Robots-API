@@ -291,38 +291,3 @@ describe("Given a deleteRobot controller", () => {
     });
   });
 });
-
-describe("Given a tokenControl controller", () => {
-  describe("When it receives req.query with token Ok", () => {
-    test("Then it should call next()", () => {
-      const req = {
-        query: {
-          token: "h29D8b23Llm45",
-        },
-      };
-
-      const next = jest.fn();
-
-      tokenControl(req, null, next);
-
-      expect(next).toHaveBeenCalled();
-    });
-  });
-  describe("When it receives req.query with wrong token", () => {
-    test("Then it should call next()", () => {
-      const req = {
-        query: {
-          token: "wrong token",
-        },
-      };
-
-      const res = { json: jest.fn() };
-
-      tokenControl(req, res, null);
-
-      expect(res.json).toHaveBeenCalledWith({
-        error: "Introducir el token correcto!",
-      });
-    });
-  });
-});
