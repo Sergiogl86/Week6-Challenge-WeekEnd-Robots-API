@@ -10,7 +10,7 @@ const conectarBD = (connectionString) =>
       if (error) {
         debug(chalk.red("No se ha conectado a BD - Robots."));
         debug(chalk.red(error.message));
-        reject();
+        reject(error);
         return;
       }
       debug(chalk.green("Conectado a BD - Robots."));

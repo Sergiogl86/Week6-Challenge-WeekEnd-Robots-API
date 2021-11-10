@@ -19,7 +19,7 @@ const getIdRobot = async (req, res, next) => {
   try {
     debug(chalk.red(`Haciendo el buscando a /${idRobot}`));
     const getRobot = await Robot.findOne({
-      id: idRobot,
+      _id: idRobot,
     });
     res.json(getRobot);
   } catch (error) {
@@ -60,10 +60,18 @@ const deleteRobot = async (req, res, next) => {
   try {
     const { idRobot } = req.params;
     debug(chalk.red(`Haciendo el DELETE a /delete/${idRobot}`));
-    await Robot.deleteOne({
-      id: idRobot,
+    const { deletedCount } = await Robot.deleteOne({
+      _id: idRobot,
     });
-    res.json({ id: idRobot });
+    debug(chalk.red(`Salida de delete one -> ${JSON.stringify(deletedCount)}`));
+    if (deletedCount === 0) {
+      debug(chalk.red(`Error en DELETE a /delete/${idRobot}`));
+      const error = new Error("Id no valida para borrar!");
+      error.code = 400;
+      next(error);
+    } else {
+      res.json({ id: idRobot });
+    }
   } catch (error) {
     error.code = 400;
     error.message = "Datos erroneos!";
